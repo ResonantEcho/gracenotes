@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grace Notes with Andy Burdge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --deep: #111111;
+      --surface: #181818;
+      --surface2: #1f1f1f;
+      --border: #2a2a2a;
+      --border-soft: #222222;
+      --white: #f0ece4;
+      --off-white: #c8c2b8;
+      --muted: #6b6560;
+      --silver: #9a9590;
+      --gold: #c9a84c;
+      --gold-dim: #8a6e2f;
+      --gold-glow: rgba(201,168,76,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      padding: 72px 24px 56px;
+      position: relative;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, transparent, var(--gold-dim));
+    }
+    .eyebrow {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeDown 0.8s ease forwards 0.2s;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      opacity: 0;
+      animation: fadeDown 0.8s ease forwards 0.4s;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .header-rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 28px;
+      opacity: 0;
+      animation: fadeDown 0.6s ease forwards 0.6s;
+    }
+    .header-rule span {
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim));
+    }
+    .header-rule span:last-child {
+      background: linear-gradient(90deg, var(--gold-dim), transparent);
+    }
+    .header-rule i {
+      color: var(--gold);
+      font-style: normal;
+      font-size: 0.5rem;
+      letter-spacing: 0.3em;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    /* ── BIO SECTION ── */
+    .bio-section {
+      display: flex;
+      gap: 60px;
+      align-items: flex-start;
+      margin-bottom: 80px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.7s;
+    }
+    @media (max-width: 700px) {
+      .bio-section { flex-direction: column; gap: 40px; }
+    }
+
+    /* Photo */
+    .photo-frame {
+      flex: 0 0 300px;
+      position: relative;
+    }
+    @media (max-width: 700px) {
+      .photo-frame { flex: unset; width: 100%; max-width: 340px; margin: 0 auto; }
+    }
+    .photo-wrap {
+      position: relative;
+    }
+    .photo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border: 1px solid var(--gold-dim);
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .photo-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      right: -12px;
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      z-index: 0;
+    }
+    .photo-wrap img {
+      display: block;
+      width: 100%;
+      border-radius: 2px;
+      position: relative;
+      z-index: 1;
+      filter: brightness(0.92) contrast(1.05);
+    }
+    .photo-caption {
+      margin-top: 20px;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* Bio text */
+    .bio-text {
+      flex: 1;
+      padding-top: 8px;
+    }
+    .bio-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .bio-rule {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      margin-bottom: 24px;
+    }
+    .bio-text p {
+      font-size: 0.92rem;
+      line-height: 1.9;
+      color: var(--off-white);
+      font-weight: 300;
+      margin-bottom: 16px;
+      letter-spacing: 0.02em;
+    }
+    .bio-text p.placeholder-note {
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-left: 2px solid var(--gold-dim);
+      padding-left: 14px;
+      margin-top: 24px;
+      line-height: 1.7;
+    }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 0 0 64px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.9s;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-divider span {
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+    }
+
+    /* ── LINKS ── */
+    .links-section {
+      margin-bottom: 72px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 1.0s;
+    }
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .links-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    @media (max-width: 480px) { .links-grid { grid-template-columns: 1fr; } }
+    .link-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 32px 28px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--white);
+      transition: border-color 0.25s, background 0.25s, transform 0.25s;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+    .link-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform: scaleX(0);
+      transition: transform 0.35s ease;
+    }
+    .link-card:hover {
+      border-color: var(--gold-dim);
+      background: var(--surface2);
+      transform: translateY(-2px);
+    }
+    .link-card:hover::before { transform: scaleX(1); }
+    .card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      display: block;
+      opacity: 0.8;
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 6px;
+      letter-spacing: 0.03em;
+    }
+    .card-desc {
+      font-size: 0.72rem;
+      color: var(--silver);
+      letter-spacing: 0.08em;
+    }
+    .link-placeholder {
+      font-size: 0.65rem;
+      color: var(--gold-dim);
+      margin-top: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── DEVOTIONAL ── */
+    .devotional-section {
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 1.1s;
+    }
+    .devotional-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 48px 52px;
+      position: relative;
+      overflow: hidden;
+    }
+    .devotional-card::before {
+      content: '\271D';
+      position: absolute;
+      top: -20px; right: 40px;
+      font-size: 10rem;
+      color: var(--gold);
+      opacity: 0.04;
+      line-height: 1;
+      font-family: serif;
+      pointer-events: none;
+    }
+    .devotional-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: linear-gradient(to bottom, var(--gold-dim), transparent);
+    }
+    @media (max-width: 600px) { .devotional-card { padding: 32px 28px; } }
+
+    .devotional-header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .devotional-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--white);
+    }
+    .devotional-date {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .verse-reference {
+      display: inline-block;
+      border: 1px solid var(--gold-dim);
+      color: var(--gold);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 1px;
+      margin-bottom: 24px;
+    }
+    .verse-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.9;
+      color: var(--off-white);
+      margin-bottom: 24px;
+      padding-left: 24px;
+      border-left: 1px solid var(--gold-dim);
+    }
+    .reflection-text {
+      font-size: 0.88rem;
+      line-height: 1.85;
+      color: var(--silver);
+      font-weight: 300;
+      letter-spacing: 0.02em;
+    }
+    .reflection-text strong {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 400;
+    }
+    .devotional-footer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+    #devotional-loading {
+      text-align: center;
+      padding: 48px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .spinner {
+      display: block;
+      width: 20px; height: 20px;
+      border: 1px solid var(--border);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border-soft);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    footer em { color: var(--gold-dim); font-style: normal; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <p class="eyebrow">Music &nbsp;·&nbsp; Faith &nbsp;·&nbsp; Reflection</p>
+    <h1><em>Grace Notes</em><br>with Andy Burdge</h1>
+    <div class="header-rule">
+      <span></span>
+      <i>✦ ✦ ✦</i>
+      <span></span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- BIO -->
+    <section class="bio-section">
+      <div class="photo-frame">
+        <div class="photo-wrap">
+          <img src="andy-profile.png" alt="Andy Burdge at the piano" />
+        </div>
+        <p class="photo-caption">Andy Burdge &nbsp;·&nbsp; at the keys</p>
+      </div>
+
+      <div class="bio-text">
+        <h2>Hello, I'm Andy.</h2>
+        <div class="bio-rule"></div>
+        <p>
+          Welcome to <em>Grace Notes</em> — a place where music and faith meet. I've spent a lifetime at the piano, finding that the language of keys and chords often says what words alone cannot.
+        </p>
+        <p>
+          Whether I'm playing hymns on a Sunday morning, exploring classical repertoire, or just noodling through a quiet evening, the piano has always been my way of praying without words.
+        </p>
+        <p>
+          This site is where I share that journey with you — through my blog, my YouTube channel, and a daily dose of Scripture to start your day.
+        </p>
+        <p class="placeholder-note">
+          ✏️ Placeholder — replace with your real bio: your story, your musical background, your faith journey.
+        </p>
+      </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="section-divider"><span>✦</span></div>
+
+    <!-- LINKS -->
+    <section class="links-section">
+      <p class="section-label">Find me here</p>
+      <div class="links-grid">
+        <a href="#" class="link-card">
+          <span class="card-icon">✍️</span>
+          <div class="card-title">My Blog</div>
+          <div class="card-desc">Reflections on music, life &amp; faith</div>
+          <div class="link-placeholder">← add your blog URL</div>
+        </a>
+        <a href="#" class="link-card">
+          <span class="card-icon">▶️</span>
+          <div class="card-title">YouTube Channel</div>
+          <div class="card-desc">Piano performances &amp; musical musings</div>
+          <div class="link-placeholder">← add your YouTube URL</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="section-divider"><span>✦</span></div>
+
+    <!-- DEVOTIONAL -->
+    <section class="devotional-section">
+      <p class="section-label">Daily Devotional</p>
+      <div class="devotional-card">
+        <div id="devotional-loading">
+          <span class="spinner"></span>
+          Loading today's word…
+        </div>
+        <div id="devotional-content" style="display:none;">
+          <div class="devotional-header">
+            <h2>Today's Word</h2>
+            <span class="devotional-date" id="dev-date"></span>
+          </div>
+          <div class="verse-reference" id="dev-reference"></div>
+          <p class="verse-text" id="dev-verse"></p>
+          <div class="reflection-text" id="dev-reflection"></div>
+          <p class="devotional-footer">Devotional updates each day &nbsp;·&nbsp; Come back tomorrow for a fresh word</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <em>Grace Notes</em> &nbsp;·&nbsp; Andy Burdge &nbsp;·&nbsp; Made with music &amp; faith
+  </footer>
+
+  <script>
+    const devotionals = [
+      {
+        reference: "Psalm 46:10",
+        verse: "Be still, and know that I am God. I will be exalted among the nations, I will be exalted in the earth!",
+        reflection: "<strong>A Moment of Stillness.</strong> In the rush of each day, we are invited to pause — to set down the noise and simply rest in the presence of God. The same God who calms the nations is present with you right now. Take a breath. He is here."
+      },
+      {
+        reference: "Philippians 4:6–7",
+        verse: "Do not be anxious about anything, but in everything by prayer and supplication with thanksgiving let your requests be made known to God. And the peace of God, which surpasses all understanding, will guard your hearts and your minds in Christ Jesus.",
+        reflection: "<strong>Peace Beyond Understanding.</strong> Anxiety is real, but it need not have the final word. Paul writes from prison, yet speaks of surpassing peace. When we bring our worries to God in prayer — even imperfect, fumbling prayer — He guards our hearts with a calm that logic alone cannot explain."
+      },
+      {
+        reference: "Isaiah 40:31",
+        verse: "But they who wait for the Lord shall renew their strength; they shall mount up with wings like eagles; they shall run and not be weary; they shall walk and not faint.",
+        reflection: "<strong>Renewed Strength.</strong> Waiting is hard — but Scripture calls it holy work. To wait on the Lord is not passive resignation; it is active trust. As you wait today, believe that He is at work in ways you cannot yet see, and that strength is already on its way."
+      },
+      {
+        reference: "John 15:5",
+        verse: "I am the vine; you are the branches. Whoever abides in me and I in him, he it is that bears much fruit, for apart from me you can do nothing.",
+        reflection: "<strong>Abide.</strong> A branch does not strain to produce fruit — it simply stays connected to the vine. Today, rather than trying harder, try abiding more. Stay in the Word, in prayer, in communion with Christ. The fruit will follow."
+      },
+      {
+        reference: "Lamentations 3:22–23",
+        verse: "The steadfast love of the Lord never ceases; his mercies never come to an end; they are new every morning; great is your faithfulness.",
+        reflection: "<strong>New Every Morning.</strong> Whatever yesterday held, this morning is a fresh page. God's mercies are not rationed or finite — they are renewed with the dawn. Whatever you carry from yesterday, lay it down. Today's mercies are already here."
+      },
+      {
+        reference: "Romans 8:28",
+        verse: "And we know that for those who love God all things work together for good, for those who are called according to his purpose.",
+        reflection: "<strong>All Things.</strong> Not some things — all things. Even the broken, confusing, painful threads of your story are being woven by a Master Weaver into something purposeful. You may not see the full picture today, but you can trust the One who does."
+      },
+      {
+        reference: "Proverbs 3:5–6",
+        verse: "Trust in the Lord with all your heart, and do not lean on your own understanding. In all your ways acknowledge him, and he will make straight your paths.",
+        reflection: "<strong>Straight Paths.</strong> Our own understanding is limited; God's is infinite. Acknowledging Him doesn't mean we stop thinking — it means we hold our plans loosely, open to His redirection. Trust today, even when the path isn't fully visible."
+      },
+      {
+        reference: "Matthew 11:28",
+        verse: "Come to me, all who labor and are heavy laden, and I will give you rest.",
+        reflection: "<strong>An Open Invitation.</strong> Jesus does not say 'come when you've sorted yourself out' — He says come now, as you are, laden as you are. The rest He offers is not merely sleep; it is the deep rest of a soul no longer striving to earn what grace already gives."
+      },
+      {
+        reference: "2 Corinthians 12:9",
+        verse: "But he said to me, 'My grace is sufficient for you, for my power is made perfect in weakness.' Therefore I will boast all the more gladly of my weaknesses, so that the power of Christ may rest upon me.",
+        reflection: "<strong>Sufficient Grace.</strong> We want strength; God offers Himself. In the places where we feel most inadequate, His power is most fully displayed. Your weakness is not disqualifying — it is the very soil where His grace takes root."
+      },
+      {
+        reference: "Joshua 1:9",
+        verse: "Have I not commanded you? Be strong and courageous. Do not be frightened, and do not be dismayed, for the Lord your God is with you wherever you go.",
+        reflection: "<strong>Wherever You Go.</strong> God's presence is not reserved for the sanctuary. It travels with you — into the difficult meeting, the hard conversation, the uncertain road. The same word given to Joshua on the edge of the unknown is given to you today: be strong and courageous."
+      },
+    ];
+
+    function getDayOfYear() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), 0, 0);
+      return Math.floor((now - start) / 86400000);
+    }
+
+    function formatDate(d) {
+      return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    setTimeout(() => {
+      const idx = getDayOfYear() % devotionals.length;
+      const d = devotionals[idx];
+      document.getElementById('dev-date').textContent = formatDate(new Date());
+      document.getElementById('dev-reference').textContent = d.reference;
+      document.getElementById('dev-verse').textContent = '\u201C' + d.verse + '\u201D';
+      document.getElementById('dev-reflection').innerHTML = d.reflection;
+
+      document.getElementById('devotional-loading').style.display = 'none';
+      const c = document.getElementById('devotional-content');
+      c.style.display = 'block';
+      c.style.opacity = '0';
+      c.style.transition = 'opacity 0.7s ease';
+      requestAnimationFrame(() => c.style.opacity = '1');
+    }, 600);
+  </script>
+</body>
+</html>
